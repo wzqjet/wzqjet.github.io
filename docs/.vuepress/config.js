@@ -2,10 +2,10 @@
 
 module.exports = {
   // 网站 Title
-  title: 'My Blog',
+  title: '一只小码农',
 
   // 网站描述
-  description: 'This is my blog',
+  description: '一只小码农',
 
   // 网站语言
   locales: {
