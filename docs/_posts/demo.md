@@ -1,4 +1,1 @@
 ### demo
-```python
-print('hhhh')
-```
