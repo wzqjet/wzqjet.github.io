@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "vuepress": "^1.0.0-rc.1",
+    "vuepress-theme-meteorlxy": "^1.8.0"
+  },
+  "scripts": {
+    "blog:dev": "vuepress dev docs",
+    "blog:build": "vuepress build docs"
+  }
+}
