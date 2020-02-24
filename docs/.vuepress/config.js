@@ -48,20 +48,8 @@ module.exports = {
         },
         // 新浪微博 帐号和链接
         weibo: {
-          account: '@焦炭君_Meteor',
-          link: 'https://weibo.com/u/2039655434',
-        },
-
-        // 知乎 帐号和链接
-        zhihu: {
-          account: 'meteorlxy.cn',
-          link: 'https://www.zhihu.com/people/meteorlxy.cn',
-        },
-
-        // 豆瓣 帐号和链接
-        douban: {
-          account: '159342708',
-          link: 'https://www.douban.com/people/159342708',
+          account: '@Cz朔风',
+          link: 'https://weibo.com/u/5713094554',
         },
       },
     },
