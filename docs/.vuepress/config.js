@@ -2,10 +2,10 @@
 
 module.exports = {
   // 网站 Title
-  title: '一只小码农',
+  title: '一只码农',
 
   // 网站描述
-  description: '一只小码农',
+  description: '一只码农',
 
   // 网站语言
   locales: {
@@ -22,10 +22,10 @@ module.exports = {
     // 个人信息（没有或不想设置的，删掉对应字段即可）
     personalInfo: {
       // 昵称
-      nickname: 'Cz朔风',
+      nickname: 'undefined',
 
       // 个人简介
-      description: 'Happy Coding<br/>Happy Life',
+      description: 'Try to be full stack ...',
 
       // 电子邮箱
       email: 'wzqjet@gmail.com',
@@ -37,7 +37,7 @@ module.exports = {
       organization: 'Fiberhome',
 
       // 头像
-      avatar: 'https://www.meteorlxy.cn/assets/img/avatar.jpg',
+      avatar: 'https://avatars2.githubusercontent.com/u/17195046?s=460&v=4',
 
       // 社交平台帐号信息
       sns: {
