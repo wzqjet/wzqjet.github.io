@@ -76,8 +76,8 @@ module.exports = {
     comments: {
       owner: 'wzqjet',
       repo: 'wzqjet.github.io',
-      clientId: 'MY_CLIENT_ID',
-      clientSecret: 'MY_CLIENT_SECRET',
+      clientId: '2f462915b47a4dd97b3a',
+      clientSecret: 'f4bd1c2df18a360d88ab776935ff4f340d940702',
     },
   },
 }
