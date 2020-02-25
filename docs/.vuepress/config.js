@@ -74,8 +74,8 @@ module.exports = {
 
     // 评论配置，参考下方 [页面评论] 章节
     comments: {
-      owner: 'meteorlxy',
-      repo: 'vuepress-theme-meteorlxy',
+      owner: 'wzqjet',
+      repo: 'wzqjet.github.io',
       clientId: 'MY_CLIENT_ID',
       clientSecret: 'MY_CLIENT_SECRET',
     },
