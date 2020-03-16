@@ -37,7 +37,7 @@ module.exports = {
       organization: 'Fiberhome',
 
       // 头像
-      avatar: 'https://tva1.sinaimg.cn/crop.0.3.1018.1018.180/a716fd45gw1ev7q2k8japj20sg0sg779.jpg?KID=imgbed,tva&Expires=1584384455&ssig=QxVHAl6C3v',
+      avatar: 'https://tva1.sinaimg.cn/crop.0.3.1018.1018.180/a716fd45gw1ev7q2k8japj20sg0sg779.jpg',
 
       // 社交平台帐号信息
       sns: {
