@@ -37,7 +37,7 @@ module.exports = {
       organization: 'Fiberhome',
 
       // 头像
-      avatar: 'https://avatars2.githubusercontent.com/u/17195046?s=460&v=4',
+      avatar: 'https://weibo.com/u/5514969384a',
 
       // 社交平台帐号信息
       sns: {
