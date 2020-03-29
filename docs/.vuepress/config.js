@@ -2,10 +2,10 @@
 
 module.exports = {
   // 网站 Title
-  title: '一只码农',
+  title: 'Java2Go',
 
   // 网站描述
-  description: '一只码农',
+  description: 'Java2Go',
 
   // 网站语言
   locales: {
@@ -37,7 +37,7 @@ module.exports = {
       organization: 'Fiberhome',
 
       // 头像
-      avatar: 'https://cdn.img.wenhairu.com/images/2020/03/26/ql6ru.png',
+      avatar: 'https://i.loli.net/2020/03/29/3qWhpl6VnFGatcS.png',
 
       // 社交平台帐号信息
       sns: {
@@ -57,7 +57,7 @@ module.exports = {
     // 上方 header 的背景，可以使用图片，或者随机变化的图案
     headerBackground: {
       // 使用图片的 URL，如果设置了图片 URL，则不会生成随机变化的图案，下面的 useGeo 将失效
-      url: '/assets/img/bg.jpg',
+      url: 'https://i.loli.net/2020/03/29/rZ3INwW61las2gY.jpg',
 
       // 使用随机变化的图案，如果设置为 false，且没有设置图片 URL，将显示为纯色背景
       useGeo: true,

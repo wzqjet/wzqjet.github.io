@@ -8,7 +8,7 @@ lang: zh-CN
 
 ---
 
-使用Docker搭建MySQL主从复制
+## 使用Docker搭建MySQL主从复制
 
 <!-- more -->
 
@@ -81,7 +81,7 @@ docker restart 146ff0765304
 
   新建查询
 
-  ```mysql
+  ```sql
   -- 创建数据同步用户
   CREATE USER 'reader'@'%' IDENTIFIED BY 'xxxxxxxx';
   -- 授予权限
@@ -96,7 +96,7 @@ docker restart 146ff0765304
 
   新建查询
 
-  ```mysql
+  ```sql
   -- 设置主节点为33061对应的数据库
   -- MASTER_HOST为服务器内部IP
   CHANGE MASTER TO MASTER_HOST = '192.168.0.229',
