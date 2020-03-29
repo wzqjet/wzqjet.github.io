@@ -16,6 +16,7 @@ install:
 
 script:
   - yarn blog:build
+  - cp CNAME docs/.vuepress/dist/CNAME
 
 deploy:
   provider: pages
