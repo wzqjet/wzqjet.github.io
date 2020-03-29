@@ -22,10 +22,10 @@ module.exports = {
     // 个人信息（没有或不想设置的，删掉对应字段即可）
     personalInfo: {
       // 昵称
-      nickname: '总以为答案会出现在下一个车站',
+      nickname: 'Java2Go',
 
       // 个人简介
-      description: 'Try to be full stack ...',
+      description: '总以为答案会出现在下一个车站',
 
       // 电子邮箱
       email: 'wzqjet@gmail.com',
