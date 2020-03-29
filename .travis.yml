@@ -17,6 +17,7 @@ install:
 script:
   - yarn blog:build
   - cp CNAME docs/.vuepress/dist/CNAME
+  - cp favicon.ico docs/.vuepress/dist/favicon.ico
 
 deploy:
   provider: pages

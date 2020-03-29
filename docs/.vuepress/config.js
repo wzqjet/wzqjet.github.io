@@ -60,7 +60,7 @@ module.exports = {
       url: 'https://i.loli.net/2020/03/29/rZ3INwW61las2gY.jpg',
 
       // 使用随机变化的图案，如果设置为 false，且没有设置图片 URL，将显示为纯色背景
-      useGeo: true,
+      useGeo: false,
     },
 
     // 是否显示文章的最近更新时间
