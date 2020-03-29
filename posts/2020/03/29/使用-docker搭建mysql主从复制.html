@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>使用Docker搭建MySQL主从复制 | 一只码农</title>
+    <meta name="description" content="一只码农">
+    <meta name="generator" content="VuePress 1.3.1">
+    <link rel="preload" href="/assets/css/0.styles.d4ef4663.css" as="style"><link rel="preload" href="/assets/js/app.9f01b25d.js" as="script"><link rel="preload" href="/assets/js/7.0612fb0f.js" as="script"><link rel="preload" href="/assets/js/19.088e12f9.js" as="script"><link rel="prefetch" href="/assets/js/1.b0bf6a24.js"><link rel="prefetch" href="/assets/js/10.b6315246.js"><link rel="prefetch" href="/assets/js/11.81a7d5db.js"><link rel="prefetch" href="/assets/js/12.ec73b4dd.js"><link rel="prefetch" href="/assets/js/13.50a540e8.js"><link rel="prefetch" href="/assets/js/14.170a51a7.js"><link rel="prefetch" href="/assets/js/15.8e1e31bb.js"><link rel="prefetch" href="/assets/js/16.1fa26381.js"><link rel="prefetch" href="/assets/js/17.21d81e82.js"><link rel="prefetch" href="/assets/js/18.337234c1.js"><link rel="prefetch" href="/assets/js/20.d7da4d7a.js"><link rel="prefetch" href="/assets/js/3.60574e7a.js"><link rel="prefetch" href="/assets/js/4.ca93c142.js"><link rel="prefetch" href="/assets/js/5.06f1b4f2.js"><link rel="prefetch" href="/assets/js/6.4b3b9b8f.js"><link rel="prefetch" href="/assets/js/8.238c4162.js"><link rel="prefetch" href="/assets/js/9.393720fe.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.d4ef4663.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="vuepress-theme-meteorlxy"><header class="header" data-v-7a046aea><div data-v-e4145d0a data-v-7a046aea><nav class="navbar" data-v-e4145d0a><div class="container" data-v-e4145d0a><a href="/" class="router-link-active" data-v-e4145d0a><span class="navbar-site-name" data-v-e4145d0a>
+          一只码农
+        </span></a> <div class="navbar-toggler" data-v-e4145d0a><svg class="icon" style="font-size:1.2em;" data-v-e4145d0a data-v-e4145d0a><title data-v-e4145d0a data-v-e4145d0a>menu</title><use xlink:href="#icon-menu" data-v-e4145d0a data-v-e4145d0a></use></svg></div> <div class="navbar-links" data-v-e4145d0a><a href="/" class="navbar-link" data-v-e4145d0a>
+            Home
+          </a><a href="/posts/" class="navbar-link router-link-active" data-v-e4145d0a>
+            Posts
+          </a></div></div></nav> <div class="navbar-holder" style="display:none;" data-v-e4145d0a></div></div> <div class="banner" data-v-98d6aa8c data-v-7a046aea data-v-7a046aea><div class="container" data-v-98d6aa8c><div class="center" data-v-98d6aa8c><h1 data-v-98d6aa8c data-v-7a046aea>
+          使用Docker搭建MySQL主从复制
+        </h1></div></div></div></header> <div class="container clearfix show-aside" data-v-4dd605a1 data-v-4dd605a1><main class="main" data-v-4dd605a1><div class="post" data-v-4dd605a1 data-v-4dd605a1><section class="post-meta main-div" data-v-4e23451f><section class="post-date clearfix" data-v-4e23451f><span class="create-date" data-v-4e23451f>
+      Created : 2020-03-29
+    </span> <span class="update-date" data-v-4e23451f>
+      Updated : 2020-03-29
+    </span></section> <section class="post-links" data-v-4e23451f><a href="/posts/2020/03/27/golang-%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E6%96%B9%E6%B3%95.html" class="post-link" data-v-4e23451f>
+      Previous Post : 结构体与方法
+    </a> <a href="/posts/2020/02/27/golang-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-01.html" class="post-link" data-v-4e23451f>
+      Next Post : Golang-学习笔记(01)
+    </a></section></section> <article class="main-div"><div class="post-content content content__default"><p>使用Docker搭建MySQL主从复制</p> <h3 id="_1、下载mysql镜像"><a href="#_1、下载mysql镜像" class="header-anchor">#</a> 1、下载MySQL镜像</h3> <p>我这里直接下载最新版本镜像，版本8.0</p> <div class="language-bash extra-class"><pre class="language-bash"><code>docker pull mysql
+</code></pre></div><h3 id="_2、创建容器"><a href="#_2、创建容器" class="header-anchor">#</a> 2、创建容器</h3> <p>使用<code>mysql</code>镜像创建两个容器，主从分别对应<code>33061</code>和<code>33062</code>端口</p> <div class="language-bash extra-class"><pre class="language-bash"><code>docker run -p <span class="token number">33061</span>:3306 --name mysql-master -e <span class="token assign-left variable">MYSQL_ROOT_PASSWORD</span><span class="token operator">=</span>xxxxxxx -d mysql
+docker run -p <span class="token number">33062</span>:3306 --name mysql-slave -e <span class="token assign-left variable">MYSQL_ROOT_PASSWORD</span><span class="token operator">=</span>xxxxxxx -d mysql
+</code></pre></div><h3 id="_3、修改mysql配置文件"><a href="#_3、修改mysql配置文件" class="header-anchor">#</a> 3、修改MySQL配置文件</h3> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token comment">#查看正在运行的所有容器</span>
+docker <span class="token function">ps</span>
+<span class="token comment">#分别进入主从MySQL容器</span>
+docker <span class="token builtin class-name">exec</span> -it 146ff0765304 /bin/bash
+<span class="token builtin class-name">cd</span> /etc/mysql/conf.d/
+<span class="token comment">#vim需要手动安装</span>
+<span class="token function">vim</span> mysql.cnf
+</code></pre></div><p>修改MySQL配置文件</p> <ul><li><p>主服务器配置</p> <div class="language-cnf extra-class"><pre class="language-text"><code>[mysqld]
+## 设置server_id
+server-id=100
+log-bin=mysql-bin
+</code></pre></div></li> <li><p>从服务器配置</p> <div class="language-cnf extra-class"><pre class="language-text"><code>[mysqld]
+## 设置server_id,注意要唯一
+server-id=101  
+## 开启二进制日志功能，以备Slave作为其它Slave的Master时使用
+log-bin=mysql-slave-bin   
+## relay_log配置中继日志
+relay_log=edu-mysql-relay-bin
+</code></pre></div></li></ul> <h3 id="_4、重启容器"><a href="#_4、重启容器" class="header-anchor">#</a> 4、重启容器</h3> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token comment"># 重启主从容器 我这边只写了一个</span>
+docker restart 146ff0765304
+</code></pre></div><h3 id="_5、使用navicat连接数据库"><a href="#_5、使用navicat连接数据库" class="header-anchor">#</a> 5、使用Navicat连接数据库</h3> <ul><li>使用客户端连接主从数据库，也可直接在服务器用命令行连接</li></ul> <p><img src="https://i.loli.net/2020/03/29/4C6XYKhwUvaAceP.png" alt=""></p> <ul><li><p>设置主数据库</p> <p>新建查询</p> <div class="language-mysql extra-class"><pre class="language-text"><code>-- 创建数据同步用户
+CREATE USER 'reader'@'%' IDENTIFIED BY 'xxxxxxxx';
+-- 授予权限
+GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'reader'@'%';
+</code></pre></div><p>再执行<code>SHOW MASTER STATUS</code>语句查看File和Position字段，记录备用</p> <p><img src="https://i.loli.net/2020/03/29/UPvS1JQpEIwYtA6.png" alt=""></p></li> <li><p>设置从数据库</p> <p>新建查询</p> <div class="language-mysql extra-class"><pre class="language-text"><code>-- 设置主节点为33061对应的数据库
+-- MASTER_HOST为服务器内部IP
+CHANGE MASTER TO MASTER_HOST = '192.168.0.229',
+MASTER_USER = 'reader',
+MASTER_PASSWORD = 'xxxxxxxx',
+MASTER_PORT = 33061,
+MASTER_LOG_FILE = 'mysql-bin.000001',
+MASTER_LOG_POS = 155;
+-- 开启从节点
+START SLAVE
+-- 查看从节点状态
+SHOW SLAVE STATUS
+</code></pre></div><p>以下两个状态为Yes即设置成功</p> <p><img src="https://i.loli.net/2020/03/29/VoR2B1XkGSmlyOe.png" alt=""></p></li></ul> <h3 id="_6、验证"><a href="#_6、验证" class="header-anchor">#</a> 6、验证</h3> <ul><li>在主节点新建数据库test</li></ul> <p><img src="https://i.loli.net/2020/03/29/eICDzOpqZiN48KM.png" alt=""></p> <ul><li>主节点成功建立数据库test</li></ul> <p><img src="https://i.loli.net/2020/03/29/9FUQZtXqdRvrcsi.png" alt=""></p> <ul><li><p>从节点也一样建立了test库</p> <p><img src="https://i.loli.net/2020/03/29/f6OA2Zk7nMG8caN.png" alt=""></p></li></ul></div></article> <section class="post-meta main-div" data-v-4e23451f><section class="post-date clearfix" data-v-4e23451f><span class="create-date" data-v-4e23451f>
+      Created : 2020-03-29
+    </span> <span class="update-date" data-v-4e23451f>
+      Updated : 2020-03-29
+    </span></section> <section class="post-links" data-v-4e23451f><a href="/posts/2020/03/27/golang-%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%8E%E6%96%B9%E6%B3%95.html" class="post-link" data-v-4e23451f>
+      Previous Post : 结构体与方法
+    </a> <a href="/posts/2020/02/27/golang-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-01.html" class="post-link" data-v-4e23451f>
+      Next Post : Golang-学习笔记(01)
+    </a></section></section> <div id="post-comments" class="main-div"><!----></div></div></main> <aside class="aside" data-v-4dd605a1><div class="info-card main-div" data-v-9d847660 data-v-4dd605a1><div class="info-card-header" data-v-9d847660><img src="https://cdn.img.wenhairu.com/images/2020/03/26/ql6ru.png" alt="undefined" class="info-avatar" data-v-9d847660></div> <div class="info-card-body" data-v-9d847660><section class="info-nickname" data-v-9d847660>
+      undefined
+    </section> <section class="info-desc" data-v-9d847660>Try to be full stack ...</section> <section class="info-contact" data-v-9d847660><section data-v-9d847660><span title="Hangzhou City, China" data-v-9d847660 data-v-9d847660><svg class="icon" style="font-size:1em;" data-v-9d847660 data-v-9d847660><title data-v-9d847660 data-v-9d847660>Hangzhou City, China</title><use xlink:href="#icon-location" data-v-9d847660 data-v-9d847660></use></svg><span class="info-text" data-v-9d847660 data-v-9d847660>
+          Hangzhou City, China
+        </span></span></section> <section data-v-9d847660><span title="Fiberhome" data-v-9d847660 data-v-9d847660><svg class="icon" style="font-size:1em;" data-v-9d847660 data-v-9d847660><title data-v-9d847660 data-v-9d847660>Fiberhome</title><use xlink:href="#icon-organization" data-v-9d847660 data-v-9d847660></use></svg><span class="info-text" data-v-9d847660 data-v-9d847660>
+          Fiberhome
+        </span></span></section> <section data-v-9d847660><a href="mailto:wzqjet@gmail.com" title="wzqjet@gmail.com" data-v-9d847660 data-v-9d847660><svg class="icon" style="font-size:1em;" data-v-9d847660 data-v-9d847660><title data-v-9d847660 data-v-9d847660>wzqjet@gmail.com</title><use xlink:href="#icon-email" data-v-9d847660 data-v-9d847660></use></svg><span class="info-text" data-v-9d847660 data-v-9d847660>
+          wzqjet@gmail.com
+        </span></a></section></section></div> <div class="info-card-footer" data-v-9d847660><section class="info-sns clearfix" data-v-9d847660><a href="https://github.com/wzqjet" target="_blank" class="sns-link" data-v-9d847660><span title="GitHub: wzqjet" class="sns-icon" data-v-9d847660 data-v-9d847660><svg class="icon" style="font-size:1.5em;" data-v-9d847660 data-v-9d847660><title data-v-9d847660 data-v-9d847660>GitHub: wzqjet</title><use xlink:href="#icon-github" data-v-9d847660 data-v-9d847660></use></svg></span></a><a href="https://weibo.com/u/5713094554" target="_blank" class="sns-link" data-v-9d847660><span title="新浪微博: @Cz朔风" class="sns-icon" data-v-9d847660 data-v-9d847660><svg class="icon" style="font-size:1.5em;" data-v-9d847660 data-v-9d847660><title data-v-9d847660 data-v-9d847660>新浪微博: @Cz朔风</title><use xlink:href="#icon-weibo" data-v-9d847660 data-v-9d847660></use></svg></span></a></section></div></div> <div class="post-nav-card main-div" style="position:relative;top:0;width:0px;" data-v-4dd605a1><!----> <div class="post-nav-comments"><svg class="icon"><title>comment</title><use xlink:href="#icon-comment"></use></svg> <a href="/posts/2020/03/29/%E4%BD%BF%E7%94%A8-docker%E6%90%AD%E5%BB%BAmysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6.html#post-comments">
+      Comments
+    </a></div></div></aside></div> <footer class="footer" data-v-1375e54c><p class="footer-sns-links" data-v-1375e54c><a href="https://github.com/wzqjet" target="_blank" class="sns-link" data-v-1375e54c><span title="GitHub: wzqjet" class="sns-icon" data-v-1375e54c data-v-1375e54c><svg class="icon" style="font-size:25px;" data-v-1375e54c data-v-1375e54c><title data-v-1375e54c data-v-1375e54c>GitHub: wzqjet</title><use xlink:href="#icon-github" data-v-1375e54c data-v-1375e54c></use></svg></span></a><a href="https://weibo.com/u/5713094554" target="_blank" class="sns-link" data-v-1375e54c><span title="新浪微博: @Cz朔风" class="sns-icon" data-v-1375e54c data-v-1375e54c><svg class="icon" style="font-size:25px;" data-v-1375e54c data-v-1375e54c><title data-v-1375e54c data-v-1375e54c>新浪微博: @Cz朔风</title><use xlink:href="#icon-weibo" data-v-1375e54c data-v-1375e54c></use></svg></span></a></p> <p class="footer-text" data-v-1375e54c><span data-v-1375e54c>Powered by </span> <a href="https://github.com/vuejs/vuepress" target="_blank" data-v-1375e54c>
+      VuePress
+    </a> <span data-v-1375e54c> | </span> <a href="https://github.com/meteorlxy/vuepress-theme-meteorlxy" target="_blank" data-v-1375e54c>
+        meteorlxy
+      </a></p> <!----></footer></div><div class="global-ui"><!----><!----></div></div>
+    <script src="/assets/js/app.9f01b25d.js" defer></script><script src="/assets/js/7.0612fb0f.js" defer></script><script src="/assets/js/19.088e12f9.js" defer></script>
+  </body>
+</html>
