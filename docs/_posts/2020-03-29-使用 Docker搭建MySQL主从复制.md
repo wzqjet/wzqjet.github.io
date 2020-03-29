@@ -8,7 +8,7 @@ lang: zh-CN
 
 ---
 
-## 使用Docker搭建MySQL主从复制
+使用Docker搭建MySQL主从复制
 
 <!-- more -->
 
