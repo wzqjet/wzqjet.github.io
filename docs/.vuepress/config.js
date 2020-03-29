@@ -22,7 +22,7 @@ module.exports = {
     // 个人信息（没有或不想设置的，删掉对应字段即可）
     personalInfo: {
       // 昵称
-      nickname: 'undefined',
+      nickname: '总以为答案会出现在下一个车站',
 
       // 个人简介
       description: 'Try to be full stack ...',
